@@ -1,0 +1,9 @@
+uuid: 742da413-298d-4f3c-9b71-83c0b93b095b
+langcode: en
+status: true
+dependencies: {  }
+name: 'Beast deal type'
+vid: beast_deal_type
+description: null
+weight: 0
+new_revision: false

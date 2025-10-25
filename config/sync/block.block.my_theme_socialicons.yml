@@ -1,0 +1,25 @@
+uuid: ae1282de-96df-4147-99a1-3e6ff7cbda1c
+langcode: en
+status: false
+dependencies:
+  config:
+    - system.menu.social-icons
+  module:
+    - system
+  theme:
+    - my_theme
+id: my_theme_socialicons
+theme: my_theme
+region: sub_header
+weight: -5
+provider: null
+plugin: 'system_menu_block:social-icons'
+settings:
+  id: 'system_menu_block:social-icons'
+  label: 'Social icons'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

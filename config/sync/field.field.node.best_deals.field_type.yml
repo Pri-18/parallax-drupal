@@ -1,0 +1,29 @@
+uuid: fae71b93-4132-46d3-9d2b-49e048302120
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_type
+    - node.type.best_deals
+    - taxonomy.vocabulary.beast_deal_type
+id: node.best_deals.field_type
+field_name: field_type
+entity_type: node
+bundle: best_deals
+label: Type
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      beast_deal_type: beast_deal_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

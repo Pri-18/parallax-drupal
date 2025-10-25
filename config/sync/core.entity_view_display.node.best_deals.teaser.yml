@@ -1,0 +1,44 @@
+uuid: 94b3bcfe-c373-4bc1-af3e-cdc8887c2136
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.best_deals.body
+    - field.field.node.best_deals.field_deal_image
+    - field.field.node.best_deals.field_floor_number
+    - field.field.node.best_deals.field_number_of_rooms
+    - field.field.node.best_deals.field_parking_availability
+    - field.field.node.best_deals.field_payment_process
+    - field.field.node.best_deals.field_total_flat_space
+    - field.field.node.best_deals.field_type
+    - node.type.best_deals
+  module:
+    - text
+    - user
+id: node.best_deals.teaser
+targetEntityType: node
+bundle: best_deals
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_deal_image: true
+  field_floor_number: true
+  field_number_of_rooms: true
+  field_parking_availability: true
+  field_payment_process: true
+  field_total_flat_space: true
+  field_type: true
