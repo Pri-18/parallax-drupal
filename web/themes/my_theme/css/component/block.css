@@ -1,0 +1,68 @@
+.parallax-section {
+  background-image: url("/sites/default/files/images/bg.jpg");
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.parallax-section::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to top, #0A2A43, transparent);
+  z-index: 1000;
+}
+
+.parallax-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: #0A2A43;
+  z-index: 1000;
+  mix-blend-mode: color;
+}
+
+.parallax-text {
+  font-size: 8rem;
+  margin-top: 4rem;
+  text-transform: uppercase;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+  text-shadow: 4px 4px 10px #fff;
+}
+
+.parallax-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.moon,
+.mountain,
+.road {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.mountain {
+  z-index: 2;
+}
+
+.road {
+  z-index: 3;
+}

@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the otp_register module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function otp_register_schema() {
+  $schema['user_otp'] = [
+    'description' => 'Stores OTP codes for user email verification.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'otp' => [
+        'type' => 'varchar',
+        'length' => 6,
+        'not null' => TRUE,
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'UNIX timestamp when OTP was created.',
+      ],
+      'expiry' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'UNIX timestamp when OTP will expire.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'email' => ['email'],
+      'otp' => ['otp'],
+    ],
+  ];
+
+  return $schema;
+}

@@ -1,0 +1,12 @@
+<div{{ attributes.addClass('main-banner') }}>
+  <div class="banner-slider">
+    {% for row in rows %}
+      <div class="slide" style="background-image: url('{{ row.url }}');">
+        <div class="header-text">
+          <h1>{{ row.title }}</h1>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{# {{ attach_library('my_theme/banner') }} #}

@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function otp_login_schema() {
+  $schema['otp_login'] = [
+    'description' => 'Stores OTPs for user login.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'otp' => [
+        'type' => 'varchar',
+        'length' => 10,
+        'not null' => TRUE,
+      ],
+      'expires' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Expiry timestamp (Unix time).',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'email' => ['email'],
+    ],
+  ];
+
+  return $schema;
+}

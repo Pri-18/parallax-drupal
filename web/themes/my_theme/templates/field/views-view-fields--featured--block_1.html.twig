@@ -1,0 +1,42 @@
+<div class="views-row-custom">
+  <div class="field-group field-first">
+    {{ fields.field_deal_image.content }}
+    <div class="overlay">
+      <h4>{{ fields.title.content }}</h4>
+      {{ fields.body.content }}
+    </div>
+  </div>
+
+  <div class="field-group field-second">
+    <ul class="field-second-desc-first">
+      <li>
+        <h4 class="desc-heading">{{ fields.field_total_flat_space.content }}</h4>
+        {{ fields.field_total_flat_space.label }} 
+      </li>
+
+      <li>
+        <h4 class="desc-heading">{{ fields.field_payment_process.content }}</h4>
+        {{ fields.field_payment_process.label }} 
+      </li>
+
+      <li>
+        <h4 class="desc-heading">{{ fields.field_number_of_rooms.content }}</h4>
+        {{ fields.field_number_of_rooms.label }}
+      </li>
+    </ul>
+
+    <ul class="field-second-desc-second">
+      <li>
+        <h4 class="desc-heading">{{
+          fields.field_parking_availability.content == TRUE ? "Available" : "NA"
+        }} </h4>
+        {{ fields.field_parking_availability.label }}
+      </li>
+
+      <li>
+        <h4 class="desc-heading">{{ fields.field_floor_number.content }} </h4>
+        {{ fields.field_floor_number.label }}
+      </li>
+    </ul>
+  </div>
+</div>

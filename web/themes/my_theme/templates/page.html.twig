@@ -1,0 +1,93 @@
+<div class="layout-container">
+
+  <div class="sub-header">
+    <div class="container">
+      <div class="row sub-menu-wrapper">
+        <div class="col-lg-8 col-md-8 sub-menu-inner-wrapper">
+          <ul class="info">
+            <li> <i class="fa fa-envelope"></i> info@example.com</li>
+            <li> <i class="fa fa-map"></i> Something random, 10002</li>
+          </ul>
+        </div>
+        <div class="col-lg4 col-md-4 sub-menu-inner-wrapper">
+          {{ page.sub_header }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if page.header %}
+    <header class="region-header">
+      {{ page.header }}
+    </header>
+  {% endif %}
+
+  <section class="parallax-section">
+  <h1 class="parallax-text">Moon Light</h1>
+  <div class="moon">
+    <img src="{{ file_url('sites/default/files/images/moon.png') }}" alt="Moon">
+  </div>
+  <div class="mountain">
+    <img src="{{ file_url('sites/default/files/images/mountain.png') }}" alt="Mountain">
+  </div>
+  <div class="road">
+    <img src="{{ file_url('sites/default/files/images/road.png') }}" alt="Road">
+  </div>
+</section>
+
+  {% if page.main_banner %}
+    <div class="region-main-banner">
+      {{ page.main_banner }}
+    </div>
+  {% endif %}
+  
+
+  {% if page.featured %}
+    <div class="region-featured">
+      {{ page.featured }}
+    </div>
+  {% endif %}
+
+  {% if page.video_section %}
+    <div class="region-video-section">
+      {{ page.video_section }}
+    </div>
+  {% endif %}
+
+  {% if page.video_content %}
+    <div class="region-video-content">
+      {{ page.video_content }}
+    </div>
+  {% endif %}
+
+  {% if page.fun_facts %}
+    <div class="region-fun-facts">
+      {{ page.fun_facts }}
+    </div>
+  {% endif %}
+
+  {% if page.best_deals %}
+    <div class="region-best-deals">
+      {{ page.best_deals }}
+    </div>
+  {% endif %}
+
+  {% if page.property %}
+    <div class="region-property">
+      {{ page.property }}
+    </div>
+  {% endif %}
+
+  {% if page.content %}
+    <main class="region-content">
+      {{ page.content }}
+    </main>
+  {% endif %}
+
+  {% if page.footer %}
+    <footer class="region-footer">
+      {{ page.footer }}
+    </footer>
+  {% endif %}
+
+</div>

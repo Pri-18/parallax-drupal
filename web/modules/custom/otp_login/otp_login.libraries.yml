@@ -1,0 +1,5 @@
+otp:
+  js:
+    js/otp.js: {}
+  dependencies:
+    - core/jquery

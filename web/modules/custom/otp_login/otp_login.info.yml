@@ -1,0 +1,5 @@
+name: 'otp_login'
+type: module
+description: 'To verify the email address using OTP.'
+package: Custom
+core_version_requirement: ^10 || ^11

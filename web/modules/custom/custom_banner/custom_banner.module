@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for custom_banner module.
+ */
+
+use Drupal\Core\Template\Attribute;
+use Drupal\file\Entity\File;
+use Drupal\Core\Url;
+
+/**
+ * Prepares variables for views-style-custom-banner-views.html.twig template.
+ */
+function template_preprocess_views_style_custom_banner_views(array &$variables): void {
+  $view = $variables['view'];
+  $options = $view->style_plugin->options;
+  $i = 0;
+
+  // Add wrapper classes if defined in Views options.
+  if (!empty($options['wrapper_class'])) {
+    $variables['attributes']['class'] = explode(' ', $options['wrapper_class']);
+  }
+
+  // Expose default row class.
+  $variables['default_row_class'] = $options['default_row_class'] ?? TRUE;
+
+  foreach ($variables['rows'] as $id => $row) {
+    $i++;
+
+    if (!empty($row['#row']->_entity)) {
+      $entity = $row['#row']->_entity;
+
+      // Get banner image.
+      $url = '';
+      if ($entity->hasField('field_image_slider') && !$entity->get('field_image_slider')->isEmpty()) {
+        $file_id = $entity->get('field_image_slider')->target_id;
+        if ($file_id) {
+          $file = File::load($file_id);
+          if ($file) {
+            $uri = $file->getFileUri();
+            $url = \Drupal::service('file_url_generator')->generateAbsoluteString($uri);
+          }
+        }
+      }
+
+      $variables['rows'][$id] = [
+        'content' => $row,
+        'attributes' => new Attribute(),
+        'title' => $entity->label(),
+        'url' => $url,
+        'id' => 'item item-' . $i,
+      ];
+
+      if ($row_class = $view->style_plugin->getRowClass($id)) {
+        $variables['rows'][$id]['attributes']->addClass($row_class);
+      }
+    }
+  }
+
+}

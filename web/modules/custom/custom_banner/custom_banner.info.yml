@@ -1,0 +1,5 @@
+name: 'custom_banner'
+type: module
+description: 'To implement the banner.'
+package: Custom
+core_version_requirement: ^10 || ^11

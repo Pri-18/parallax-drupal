@@ -1,0 +1,45 @@
+.user-login-form,
+form {
+  width: 50%;
+  margin: 2rem auto;
+  text-align: center;
+  padding: 2rem;
+  background: #a6ffe1;
+  border-radius: 20px;
+}
+
+#block-my-theme-page-title {
+  text-align: center;
+  margin: 2rem;
+}
+
+.user-login-form label,
+form label {
+  display: block;
+}
+
+.form-item {
+  margin-top: 1rem;
+}
+
+.form-item input {
+  outline: none;
+  width: 70%;
+  height: 40px;
+  border: none;
+  border-bottom: 2px solid #0205b1;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  padding: 1rem;
+  background: transparent;
+}
+
+.form-submit {
+  margin-top: 2rem;
+  min-width: 100px;
+  padding: 0.2rem 1rem;
+  border: 2px solid #21d0ff;
+  background-color: #e0f5fa;
+  color: #4e35ff;
+  border-radius: 20px;
+}

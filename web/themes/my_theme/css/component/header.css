@@ -1,0 +1,60 @@
+header {
+  padding: 0.5rem 0;
+  background-color: #9ffcff;
+}
+
+header > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav {
+  gap: 1.2rem;
+}
+
+.site-logo {
+  border-radius: 20px;
+  height: 50px;
+  width: 80px;
+}
+
+.account-menu {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.nav a {
+  color: black;
+  font-size: 1.1rem;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  color: blue;
+  border-bottom: 2px solid red;
+  transition: 0.5s;
+}
+
+.primary-tabs {
+  display: flex;
+  width: 50%;
+  justify-content: space-around;
+  margin: 1rem auto !important;
+}
+
+.primary-tabs a {
+  text-decoration: none;
+  padding: 1.1rem;
+  font-size: 1.1rem;
+  border-bottom: 2px solid transparent;
+  color: #6d0b7a;
+}
+
+.primary-tabs a:hover {
+  color: blue;
+  background-color: #c4d4d1a8;
+  border-bottom: 2px solid #00ccff;
+  transition: 0.5s;
+}
+

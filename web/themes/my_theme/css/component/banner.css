@@ -1,0 +1,189 @@
+body {
+  background-color: #e9fffdde !important;
+}
+
+.region-content {
+  min-height: 80vh;
+}
+
+/* ===========================
+   Banner / Hero Slider CSS
+=========================== */
+
+/* Main wrapper */
+.main-banner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  min-height: 90vh;
+}
+
+/* Slick slider wrapper */
+.banner-slider {
+  width: 100%;
+  height: 100%; /* default desktop height */
+}
+
+/* Each slide */
+.banner-slider .slide {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-height: 90vh;
+  transition: all 0.5s ease;
+}
+
+/* Dark overlay for better text readability */
+.banner-slider .slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.35) 40%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 0;
+}
+
+/* Caption wrapper */
+.banner-slider .slide .header-text {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Headline */
+.banner-slider .slide .header-text h1 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.1;
+  font-size: clamp(32px, 5vw, 60px); /* responsive font size */
+}
+
+/* Sub-heading / description */
+.banner-slider .slide .header-text p {
+  margin-top: 0.75rem;
+  font-size: clamp(16px, 2vw, 20px);
+  opacity: 0.9;
+  max-width: 60ch;
+}
+
+/* Slick dots */
+.banner-slider .slick-dots {
+  position: absolute;
+  bottom: 20px;
+  display: flex !important;
+  justify-content: center;
+  width: 100%;
+  z-index: 2;
+}
+
+.banner-slider .slick-dots li button:before {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.banner-slider .slick-dots li.slick-active button:before {
+  color: #fff;
+}
+
+/* Slick arrows */
+.banner-slider .slick-prev,
+.banner-slider .slick-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.banner-slider .slick-prev:hover,
+.banner-slider .slick-next:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Arrow chevrons */
+.banner-slider .slick-prev::before,
+.banner-slider .slick-next::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  display: inline-block;
+}
+
+.banner-slider .slick-prev::before {
+  transform: rotate(135deg);
+}
+
+.banner-slider .slick-next::before {
+  transform: rotate(-45deg);
+}
+
+/* Responsive Heights */
+@media (max-width: 1200px) {
+  .banner-slider,
+  .banner-slider .slide {
+    min-height: 65vh;
+  }
+}
+
+@media (max-width: 992px) {
+  .banner-slider,
+  .banner-slider .slide {
+    min-height: 55vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .banner-slider,
+  .banner-slider .slide {
+    min-height: 45vh;
+  }
+
+  .banner-slider .slick-prev,
+  .banner-slider .slick-next {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.banner-slider {
+  width: 100%;
+  min-height: 340px;
+}
+
+.slide {
+  background-size: cover;
+  background-position: center;
+  padding: 100px 0;
+}
+
+.header-text h1 {
+  color: #fff;
+  text-align: center;
+  font-size: 2.5em;
+  background: rgba(0,0,0,0.4);
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: inline-block;
+}

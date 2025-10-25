@@ -1,0 +1,66 @@
+.views-row-custom {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.field-group {
+  align-content: center;
+}
+
+.desc {
+  background-color: #fff;
+}
+
+.field-first {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  right: -50%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #e3ffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 10px #39eaff;
+}
+
+.desc-heading {
+  margin: 0;
+  margin-top: 1rem;
+}
+
+.field-second {
+  text-align: center;
+}
+
+.field-second-desc-second {
+  margin-top: 2rem !important;
+}
+
+.field-second li {
+  position: relative;
+}
+
+.field-second li::before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  content: "\f00c"; 
+  position: absolute;
+  left: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #b8faff;
+  padding: 1rem 1.2rem;
+  border-radius: 50%;
+}
+
+.field-second {
+  padding-left: 5rem;
+  padding-right: 3rem;
+  background: #f8faff;
+  box-shadow: 0px 2px #1087ff;
+}

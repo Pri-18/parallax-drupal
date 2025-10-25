@@ -1,0 +1,161 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for otp_register module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function otp_register_form_user_register_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  $form['account']['name']['#description'] = '';
+  $form['account']['mail']['#description'] = '';
+
+  // Add OTP field.
+  $form['otp'] = [
+    '#type' => 'textfield',
+    '#title' => t('Enter OTP'),
+    '#required' => TRUE,
+    '#attributes' => ['placeholder' => t('Enter the OTP sent to your email')],
+    '#weight' => 5,
+  ];
+
+  // Add Send OTP button.
+  $form['send_otp'] = [
+    '#type' => 'submit',
+    '#value' => t('Send OTP'),
+    '#submit' => ['otp_register_send_otp_submit'],
+    '#limit_validation_errors' => [['mail']],
+    '#ajax' => [
+      'callback' => 'otp_register_send_otp_ajax',
+      'wrapper' => 'otp-message',
+    ],
+    '#weight' => 4,
+  ];
+
+  // Placeholder for OTP message.
+  $form['otp_message'] = [
+    '#type' => 'markup',
+    '#markup' => '<div id="otp-message"></div>',
+    '#weight' => 6,
+  ];
+
+  // Validation for OTP on final registration submit.
+  $form['#validate'][] = 'otp_register_validate_otp';
+}
+
+/**
+ * Custom submit handler for Send OTP button.
+ */
+function otp_register_send_otp_submit(array &$form, FormStateInterface $form_state) {
+  $email = $form_state->getValue('mail');
+
+  if (empty($email)) {
+    \Drupal::messenger()->addError(t('Please enter a valid email before requesting OTP.'));
+    return;
+  }
+
+  // Generating 6-digit OTP.
+  $otp = rand(100000, 999999);
+  $time = \Drupal::time()->getRequestTime();
+  $expiry = $time + 300; // 5 minutes from now.
+
+  // Save OTP in custom table.
+  $connection = Database::getConnection();
+  //ensures one OTP per email.(merge())
+  $connection->merge('user_otp')
+    ->key(['email' => $email])
+    ->fields([
+      'otp' => $otp,
+      'created' => $time,
+      'expiry' => $expiry,
+    ])
+    ->execute();
+
+  // Prepare email.
+  $mailManager = \Drupal::service('plugin.manager.mail');
+  $module = 'otp_register';
+  $key = 'send_otp';
+  $to = $email;
+  $langcode = \Drupal::currentUser()->getPreferredLangcode();
+  $send = TRUE;
+
+  $params = [];
+  $params['subject'] = 'Your OTP for Registration';
+  $params['message'] = "Hello,\n\nYour OTP for registration is: $otp\nIt is valid for 5 minutes.\n\nThank you.";
+  $params['headers']['From'] = 'no-reply@example.com';
+  $params['headers']['Reply-To'] = 'no-reply@example.com';
+
+  // Send email
+  $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+
+  if ($result['result'] !== TRUE) {
+    \Drupal::messenger()->addError(t('Failed to send OTP. Please try again.'));
+  }
+  else {
+    \Drupal::messenger()->addMessage(t('OTP has been sent to your email.'));
+  }
+
+}
+
+/**
+ * Implements hook_mail().
+ * Defines email subject and body for OTP.
+ */
+function otp_register_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'send_otp':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['message'];
+      $message['headers']['From'] = $params['headers']['From'] ?? 'no-reply@example.com';
+      $message['headers']['Reply-To'] = $params['headers']['Reply-To'] ?? 'no-reply@example.com';
+      break;
+  }
+}
+
+/**
+ * Ajax callback to show message when OTP is sent.
+ */
+function otp_register_send_otp_ajax(array &$form, FormStateInterface $form_state) {
+  return $form['otp_message'];
+}
+
+/**
+ * Validate OTP before user registration submit.
+ */
+function otp_register_validate_otp(array &$form, FormStateInterface $form_state) {
+  $email = $form_state->getValue('mail');
+  $entered_otp = $form_state->getValue('otp');
+
+  if (empty($entered_otp)) {
+    $form_state->setErrorByName('otp', t('Please enter the OTP sent to your email.'));
+    return;
+  }
+
+  $connection = Database::getConnection();
+  $record = $connection->select('user_otp', 'u')
+    ->fields('u', ['otp', 'expiry'])
+    ->condition('email', $email)
+    ->execute()
+    ->fetchAssoc();
+
+  if (!$record) {
+    $form_state->setErrorByName('otp', t('No OTP found for this email. Please request again.'));
+    return;
+  }
+
+  if ($record['expiry'] < \Drupal::time()->getRequestTime()) {
+    $form_state->setErrorByName('otp', t('Your OTP has expired. Please request a new one.'));
+    return;
+  }
+
+  if ($record['otp'] != $entered_otp) {
+    $form_state->setErrorByName('otp', t('Invalid OTP. Please try again.'));
+    return;
+  }
+}

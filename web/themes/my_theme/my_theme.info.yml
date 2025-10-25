@@ -1,0 +1,21 @@
+name: my-theme
+type: theme
+base theme: stark
+description: A flexible theme with a responsive, mobile-first layout.
+package: Custom
+core_version_requirement: ^10
+libraries:
+  - my_theme/global
+
+regions:
+  sub_header: 'Sub Header'
+  header: 'Header'
+  main_banner: 'Main Banner'
+  featured: 'Featured'
+  video_section: 'Video Section'
+  video_content: 'Video Content'
+  fun_facts: 'Fun Facts'
+  best_deals: 'Best Deals'
+  property: 'Property'
+  content: 'Content'
+  footer: 'Footer'

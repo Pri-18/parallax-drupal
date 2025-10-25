@@ -1,0 +1,126 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function otp_login_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add "Send OTP" button.
+  $form['send_otp'] = [
+    '#type' => 'button',
+    '#value' => t('Send OTP'),
+    '#ajax' => [
+      'callback' => 'otp_login_send_otp_callback',
+      'event' => 'click',
+      'wrapper' => 'otp-wrapper',
+      'progress' => ['type' => 'throbber', 'message' => t('Sending OTP...')],
+    ],
+    '#attributes' => ['id' => 'send-otp-btn', 'disabled' => 'disabled'],
+  ];
+
+  // Wrapper for OTP field (hidden initially).
+  $form['otp_wrapper'] = [
+    '#type' => 'container',
+    '#attributes' => ['id' => 'otp-wrapper', 'style' => 'display:none;'],
+  ];
+
+  $form['otp_wrapper']['otp'] = [
+    '#type' => 'textfield',
+    '#title' => t('Enter OTP'),
+    '#required' => FALSE,
+  ];
+
+  // Attach JS library for enabling/disabling button.
+  $form['#attached']['library'][] = 'otp_login/otp';
+
+  // Add custom validation.
+  $form['#validate'][] = 'otp_login_user_login_validate';
+}
+
+/**
+ * AJAX callback to send OTP.
+ */
+function otp_login_send_otp_callback(array &$form, FormStateInterface $form_state) {
+  $email = $form_state->getValue('name'); 
+
+  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $otp = rand(100000, 999999);
+    $expires = \Drupal::time()->getCurrentTime() + (5 * 60);
+
+    $connection = Database::getConnection();
+    // Remove old OTPs for this email.
+    $connection->delete('otp_login')
+      ->condition('email', $email)
+      ->execute();
+
+    // Insert new OTP.
+    $connection->insert('otp_login')
+      ->fields([
+        'email' => $email,
+        'otp' => $otp,
+        'expires' => $expires,
+      ])
+      ->execute();
+// Email from email_registration.
+    // Send OTP via email.
+    $mailManager = \Drupal::service('plugin.manager.mail');
+    $mailManager->mail('otp_login', 'otp_mail', $email, 'en', ['otp' => $otp]);
+
+    // Reveal OTP field.
+    $form['otp_wrapper']['#attributes']['style'] = '';
+  }
+  else {
+    \Drupal::messenger()->addError(t('Please enter a valid email first.'));
+  }
+
+  return $form['otp_wrapper'];
+}
+
+/**
+ * Custom validation for OTP.
+ */
+function otp_login_user_login_validate(&$form, FormStateInterface $form_state) {
+  $email = $form_state->getValue('email_address');
+  $otp_entered = $form_state->getValue('otp');
+  $connection = Database::getConnection();
+  $record = $connection->select('otp_login', 'o')
+    ->fields('o', ['otp', 'expires'])
+    ->condition('email', $email)
+    ->execute()
+    ->fetchAssoc();
+
+  if (!$record) {
+    $form_state->setErrorByName('otp', t('No OTP found. Please request again.'));
+    return;
+  }
+
+  $now = \Drupal::time()->getCurrentTime();
+  if ($now > $record['expires']) {
+    $form_state->setErrorByName('otp', t('OTP expired. Please request a new one.'));
+    return;
+  }
+
+  if ($otp_entered != $record['otp']) {
+    $form_state->setErrorByName('otp', t('Invalid OTP.'));
+  }
+  else {
+    // OTP matched — delete it to prevent reuse.
+    $connection->delete('otp_login')
+      ->condition('email', $email)
+      ->execute();
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function otp_login_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'otp_mail':
+      $message['subject'] = t('Your Login OTP');
+      $message['body'][] = t('Your OTP is: @otp (valid for 5 minutes)', ['@otp' => $params['otp']]);
+      break;
+  }
+}

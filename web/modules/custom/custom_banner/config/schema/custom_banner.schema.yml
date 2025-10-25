@@ -1,0 +1,7 @@
+views.style.custom_banner_views:
+  type: views_style
+  label: 'views'
+  mapping:
+    wrapper_class:
+      type: string
+      label: 'Wrapper class'
